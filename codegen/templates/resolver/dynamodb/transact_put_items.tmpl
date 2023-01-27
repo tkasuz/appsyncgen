@@ -20,6 +20,7 @@ export function request(ctx) {
           id: id,
           createdAt: createdAt,
           updatedAt: createdAt,
+          _version: 1,
           {{- range .Attributes }}
           {{ if ne . "id" }}{{ . }}: input.{{ . }},{{ end }}
           {{- end }}

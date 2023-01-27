@@ -59,6 +59,11 @@ func (r *Resolver) generateUpdateResolver(exportPath string, tmpl *template.Temp
 	if obj.Type.Name == "Connection" {
 		return
 	}
+	fileForGet := r.createResolverFile(exportPath, "Mutation")
+	templates.ExecuteTemplate(templates.DynamoDBResolverTemplateData{
+		PK: returnType,
+		SK: returnType,
+	}, dynamodb.GetItem, fileForGet, tmpl)
 	attributes := fields.Names()
 	file := r.createResolverFile(exportPath, "Mutation")
 	templates.ExecuteTemplate(templates.DynamoDBResolverTemplateData{

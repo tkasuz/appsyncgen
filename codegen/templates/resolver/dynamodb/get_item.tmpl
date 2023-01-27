@@ -1,7 +1,7 @@
 import { util } from '@aws-appsync/utils';
 
 export function request(ctx){
-  const { id } = ctx.args;
+  const id = ctx.args.id || ctx.args.input.id;
   return {
     operation: 'GetItem',
     key: util.dynamodb.toMapValues({PK: `{{ .PK }}#${id}`, SK: `{{ .SK }}#${id}`}),
