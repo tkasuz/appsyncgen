@@ -1,14 +1,14 @@
 package resolver
 
 import (
-	"appsyncgen/codegen/datasource"
-	"appsyncgen/codegen/schema"
-	"appsyncgen/codegen/templates"
-	"appsyncgen/codegen/templates/resolver"
-	"appsyncgen/codegen/templates/resolver/dynamodb"
-	"appsyncgen/codegen/utils"
 	"encoding/json"
 	"fmt"
+	"github.com/kopkunka55/appsyncgen/codegen/datasource"
+	"github.com/kopkunka55/appsyncgen/codegen/schema"
+	"github.com/kopkunka55/appsyncgen/codegen/templates"
+	"github.com/kopkunka55/appsyncgen/codegen/templates/resolver"
+	"github.com/kopkunka55/appsyncgen/codegen/templates/resolver/dynamodb"
+	"github.com/kopkunka55/appsyncgen/codegen/utils"
 	"log"
 	"os"
 	"path/filepath"

@@ -1,13 +1,13 @@
 package api
 
 import (
-	"appsyncgen/codegen/utils"
 	"fmt"
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsappsync"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsdynamodb"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
+	"github.com/kopkunka55/appsyncgen/codegen/utils"
 	"log"
 	"path/filepath"
 )

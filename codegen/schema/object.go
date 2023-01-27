@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"appsyncgen/codegen/directive"
+	"github.com/kopkunka55/appsyncgen/codegen/directive"
 	"log"
 	"strings"
 )

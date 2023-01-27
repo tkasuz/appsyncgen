@@ -1,7 +1,7 @@
 package main
 
 import (
-	"appsyncgen/cli"
+	"github.com/kopkunka55/appsyncgen/cli"
 	urfave "github.com/urfave/cli/v2"
 	"log"
 	"os"
