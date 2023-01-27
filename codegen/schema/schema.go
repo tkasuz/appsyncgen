@@ -1,10 +1,10 @@
 package schema
 
 import (
-	"appsyncgen/codegen/directive"
-	"appsyncgen/codegen/templates"
-	"appsyncgen/codegen/templates/graphql"
-	"appsyncgen/codegen/utils"
+	"github.com/kopkunka55/appsyncgen/codegen/directive"
+	"github.com/kopkunka55/appsyncgen/codegen/templates"
+	"github.com/kopkunka55/appsyncgen/codegen/templates/graphql"
+	"github.com/kopkunka55/appsyncgen/codegen/utils"
 	"github.com/vektah/gqlparser/ast"
 	"github.com/vektah/gqlparser/gqlerror"
 	"github.com/vektah/gqlparser/parser"

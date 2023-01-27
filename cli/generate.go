@@ -1,10 +1,10 @@
 package cli
 
 import (
-	"appsyncgen/codegen/api"
 	"fmt"
 	"github.com/briandowns/spinner"
 	"github.com/fatih/color"
+	"github.com/kopkunka55/appsyncgen/codegen/api"
 	"github.com/urfave/cli/v2"
 	"path/filepath"
 	"time"

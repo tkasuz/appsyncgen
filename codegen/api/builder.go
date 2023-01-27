@@ -1,10 +1,10 @@
 package api
 
 import (
-	"appsyncgen/codegen/datasource"
-	"appsyncgen/codegen/resolver"
-	"appsyncgen/codegen/schema"
-	"appsyncgen/codegen/templates"
+	"github.com/kopkunka55/appsyncgen/codegen/datasource"
+	"github.com/kopkunka55/appsyncgen/codegen/resolver"
+	"github.com/kopkunka55/appsyncgen/codegen/schema"
+	"github.com/kopkunka55/appsyncgen/codegen/templates"
 	"log"
 	"os"
 	"path/filepath"

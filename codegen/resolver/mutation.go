@@ -1,9 +1,9 @@
 package resolver
 
 import (
-	"appsyncgen/codegen/templates"
-	"appsyncgen/codegen/templates/resolver/dynamodb"
 	"fmt"
+	"github.com/kopkunka55/appsyncgen/codegen/templates"
+	"github.com/kopkunka55/appsyncgen/codegen/templates/resolver/dynamodb"
 	"regexp"
 	"strings"
 	"text/template"

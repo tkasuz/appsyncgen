@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"appsyncgen/codegen/api"
+	"github.com/kopkunka55/appsyncgen/codegen/api"
 	"testing"
 )
 
