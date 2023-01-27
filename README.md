@@ -16,6 +16,7 @@ appsyncgen is a CLI providing some useful capability to develop GraphQL API with
 * Export resolver list by JSON so that you can easily implement CDK stack.
 * Generate CloudFormation Template automatically.
 * Generate Pipeline resolvers for your queries and mutations so that you can slot in your custom business logic between generated resolvers.
+* Optimistic locking with version number for update resolver
 * **TypeScript** support is coming soon.
 
 ## Concepts
