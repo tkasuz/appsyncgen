@@ -1,0 +1,10 @@
+{{- range . }}
+input Create{{ .First }}_{{ .Second }}ConnectionInput {
+    {{ .First | toLowerCase }}ID: ID!
+    {{ .Second | toLowerCase }}ID: ID!
+}
+input Delete{{ .First }}_{{ .Second }}ConnectionInput {
+    {{ .First | toLowerCase }}ID: ID!
+    {{ .Second | toLowerCase }}ID: ID!
+}
+{{- end }}

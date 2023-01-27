@@ -1,0 +1,33 @@
+import {util} from '@aws-appsync/utils';
+export function request(ctx) {
+    switch (util.authType()){
+        {{- range .}}
+            {{- if .IsOIDC }}
+        case "Open ID Connect Authorization":
+            if (ctx.identity == undefined) {
+                util.unauthorized()
+            }
+            ctx.stash.identity = ctx.identity;
+            {{- else if .IsCognito }}
+        case "User Pool Authorization":
+            if (ctx.identity == undefined) {
+                util.unauthorized()
+            }
+            ctx.stash.identity = ctx.identity;
+            {{- else if .IsAPIKey }}
+        case "API Key Authorization":
+            ctx.stash.isAuthorized = true;
+            {{- else if .IsIAM }}
+        case "IAM Authorization":
+            ctx.stash.isAuthorized = true;
+            {{- end }}
+        {{- end }}
+        default:
+            util.unauthorized()
+    }
+    return {}
+}
+
+export function response(ctx) {
+    return {}
+}

@@ -1,0 +1,18 @@
+{{$objects := .Objects}}
+{{- range .Connections }}
+{{$first := $objects.ForName .First}}
+{{$second := $objects.ForName .Second}}
+type {{ .First }}_{{ .Second }}Connection
+{{- if or ($first.AuthRules.HasApiKey) ($second.AuthRules.HasApiKey) }} @aws_api_key{{- end}}
+{{- if or ($first.AuthRules.HasCognito) ($second.AuthRules.HasCognito)}} @aws_cognito_user_pools{{- end}}
+{{- if or ($first.AuthRules.HasIAM) ($second.AuthRules.HasIAM)}} @aws_iam{{- end}}
+{{- if or ($first.AuthRules.HasOidc) ($second.AuthRules.HasOidc)}} @aws_oidc{{- end}}
+{{- if or ($first.AuthRules.HasLambda) ($second.AuthRules.HasLambda)}} @aws_lambda{{- end}} {
+    {{ .First | toLowerCase }}: {{ .First }}
+    {{ .First | toLowerCase }}ID: ID
+    {{ .Second | toLowerCase }}: {{ .Second }}
+    {{ .Second | toLowerCase }}ID: ID
+    createdAt: AWSDateTime!
+    updatedAt: AWSDateTime!
+}
+{{- end }}

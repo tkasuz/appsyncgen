@@ -1,0 +1,13 @@
+{{- range . }}
+type {{ .Name }}List
+{{- if .HasAuthRule }}
+  {{- if .AuthRules.HasApiKey}}{{$rule := .AuthRules.ForProvider "apiKey"}}{{- if $rule.HasRead}} @aws_api_key {{- end}}{{- end}}
+  {{- if .AuthRules.HasCognito}}{{$rule := .AuthRules.ForProvider "userPools"}}{{- if $rule.HasRead}} @aws_cognito_user_pools {{- end}}{{- end}}
+  {{- if .AuthRules.HasIAM}}{{$rule := .AuthRules.ForProvider "iam"}}{{- if $rule.HasRead}} @aws_iam {{- end}}{{- end}}
+  {{- if .AuthRules.HasOidc}}{{$rule := .AuthRules.ForProvider "oidc"}}{{- if $rule.HasRead}} @aws_oidc {{- end}}{{- end}}
+  {{- if .AuthRules.HasLambda}}{{$rule := .AuthRules.ForProvider "lambda"}}{{- if $rule.HasRead}} @aws_lambda {{- end}}{{- end}}
+{{- end }} {
+    items: [{{ .Name }}]!
+    nextToken: String
+}
+{{- end }}

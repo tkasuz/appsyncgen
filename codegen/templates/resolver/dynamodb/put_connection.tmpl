@@ -1,0 +1,53 @@
+import {util} from '@aws-appsync/utils';
+
+export function request(ctx){
+  const {input} = ctx.args;
+  let id;
+  if (input.id == undefined){
+    id = util.autoUlid();
+  } else {
+    id = input.id;
+  }
+  const createdAt = util.time.nowISO8601();
+  return {
+   operation: 'TransactWriteItems',
+   transactItems: [
+     {
+       table: '{{ .TableName }}',
+       operation: 'PutItem',
+       key: util.dynamodb.toMapValues({
+         PK: '{{ .PK }}#' + input.{{ .PK | toLowerCase }}ID,
+         SK: '{{ .SK }}#' + input.{{ .SK | toLowerCase }}ID
+       }),
+       attributeValues: util.dynamodb.toMapValues({
+         id: id,
+         createdAt: createdAt,
+         updatedAt: createdAt,
+       }),
+     },
+     {
+       table: '{{ .TableName }}',
+       operation: 'PutItem',
+       key: util.dynamodb.toMapValues({
+         PK: '{{ .SK }}#' + input.{{ .SK | toLowerCase }}ID,
+         SK: '{{ .PK }}#' + input.{{ .PK | toLowerCase }}ID
+       }),
+       attributeValues: util.dynamodb.toMapValues({
+         id: id,
+         createdAt: createdAt,
+         updatedAt: createdAt,
+       }),
+     },
+   ]
+ };
+}
+
+export function response(ctx){
+  if (ctx.error){
+    util.error(ctx.error.message, ctx.error.type, ctx.result)
+  }
+  return {
+     {{ .SK | toLowerCase }}ID: Object.values(ctx.result.keys[0])[0].split('#')[1],
+     {{ .PK | toLowerCase }}ID: Object.values(ctx.result.keys[0])[1].split('#')[1]
+  }
+}

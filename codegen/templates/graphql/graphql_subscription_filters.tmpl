@@ -1,0 +1,30 @@
+{{ $hasManyList := .HasManyList }}
+{{ $enums := .Enums }}
+{{- range .Objects }}
+input Subscription{{ .Name }}FilterInput {
+  id: SubscriptionIDInput
+  {{- range .Fields }}
+  {{ if .ReturnType.IsPrimitive }}
+      {{ if eq .ReturnType.IsArray false}}
+      {{ if $enums.IsEnum .ReturnType.Name }}
+  {{ .Name }}: SubscriptionStringInput
+      {{ else }}
+  {{ .Name }}: Subscription{{ .ReturnType.Name }}Input
+      {{ end }}
+      {{ end }}
+  {{ else }}
+      {{ if .Directive }}
+          {{if .Directive.ConnectionType.IsHasOne }}
+  {{ .ReturnType.Name | toLowerCase }}ID: SubscriptionIDInput
+          {{ end }}
+      {{ end }}
+  {{ end }}
+  {{- end }}
+  {{ if $hasManyList.ForFirst .Name }}
+  {{ $hasManyList.ForFirst .Name | toLowerCase }}ID: SubscriptionIDInput
+  {{ end }}
+  and: [Subscription{{ .Name }}FilterInput]
+  or: [Subscription{{ .Name }}FilterInput]
+  not: Subscription{{ .Name }}FilterInput
+}
+{{- end }}

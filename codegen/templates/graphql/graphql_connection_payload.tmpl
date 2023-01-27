@@ -1,0 +1,18 @@
+{{$objects := .Objects}}
+{{- range .Connections }}
+{{$first := $objects.ForName .First}}
+{{$second := $objects.ForName .Second}}
+type {{ .First }}_{{ .Second }}ConnectionPayload
+{{- range $first.AuthRules.ProvidersAllowedToRead.Union $second.AuthRules.ProvidersAllowedToRead }}
+{{- if .IsApiKey}} @aws_api_key{{- end}}
+{{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+{{- if .IsIam}} @aws_iam{{- end}}
+{{- if .IsOidc}} @aws_oidc{{- end}}
+{{- if .IsLambda}} @aws_lambda{{- end}}
+{{- end }} {
+  {{ .First | toLowerCase }}ID: ID
+  {{ .First | toLowerCase }}: {{ .First }}
+  {{ .Second | toLowerCase }}ID: ID
+  {{ .Second | toLowerCase }}: {{ .Second }}
+}
+{{- end }}

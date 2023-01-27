@@ -1,0 +1,32 @@
+{{- range . }}
+type {{ .Name }}
+{{- if .HasAuthRule }}
+  {{- if .AuthRules.HasApiKey}} @aws_api_key{{- end}}
+  {{- if .AuthRules.HasCognito}} @aws_cognito_user_pools{{- end}}
+  {{- if .AuthRules.HasIAM}} @aws_iam{{- end}}
+  {{- if .AuthRules.HasOidc}} @aws_oidc{{- end}}
+  {{- if .AuthRules.HasLambda}} @aws_lambda{{- end}}
+{{- end }} {
+    id: ID
+    {{- range .Fields }}
+    {{ if .ReturnType.IsPrimitive }}
+        {{ if eq .ReturnType.IsArray false}}
+    {{ .Name }}: {{ .ReturnType.Name }}{{ if eq .ReturnType.IsRequired true}}!{{ end }}
+        {{ else }}
+    {{ .Name }}: [{{ .ReturnType.Name }}{{ if eq .ReturnType.IsRequired true}}!{{ end }}]{{ if eq .ReturnType.IsArrayRequired true}}!{{ end }}
+        {{ end }}
+    {{ else }}
+        {{ if .Directive }}
+            {{if .Directive.ConnectionType.IsHasOne}}
+    {{ .Name }}: {{ .ReturnType.Name }}{{ if eq .ReturnType.IsRequired true}}!{{ end }}
+    {{ .ReturnType.Name | toLowerCase }}ID: ID
+            {{else if or (.Directive.ConnectionType.IsHasMany) (.Directive.ConnectionType.IsManyToMany)}}
+    {{ .Name }}: {{ .ReturnType.Name }}List{{ if eq .ReturnType.IsRequired true}}!{{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+    {{- end }}
+    createdAt: AWSDateTime!
+    updatedAt: AWSDateTime!
+}
+{{- end }}

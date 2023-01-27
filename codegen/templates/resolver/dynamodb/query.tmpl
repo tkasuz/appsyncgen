@@ -1,0 +1,22 @@
+import { util } from '@aws-appsync/utils';
+
+export function request(ctx){
+  const id = ctx.args.{{ .PK | toLowerCase }}ID;
+  const { nextToken, limit } = ctx.args;
+  return {
+    operation: 'Query',
+    query: {
+      expression: 'PK = :id and begins_with(SK, :SK)',
+      expressionValues: util.dynamodb.toMapValues({':id': `{{ .PK }}#${id}`, ':SK': '{{ .SK }}'})
+    },
+    limit: limit,
+    nextToken: nextToken
+  };
+}
+
+export function response(ctx){
+  if (ctx.error){
+    util.error(ctx.error.message, ctx.error.type, ctx.result)
+  }
+  return ctx.result;
+}

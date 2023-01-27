@@ -1,0 +1,38 @@
+type Message
+@auth (rules: [
+    {provider: apiKey},
+])
+{
+    body: String!
+    from: User! @hasOne
+}
+
+enum Role {
+  ADMIN
+  READER
+  EDITOR
+}
+
+type User
+@auth (rules: [
+    {provider: apiKey, operations: [create, update, delete, read]},
+])
+{
+    name: String!
+    score: Int!
+    chats: [Chat]! @manyToMany
+    profilePicture: String
+    roles: [Role]!
+}
+
+type Chat
+@auth (rules: [
+    {provider: apiKey}
+])
+{
+    name: String!
+    members: [User] @manyToMany
+    messages: [Message] @hasMany
+}
+
+

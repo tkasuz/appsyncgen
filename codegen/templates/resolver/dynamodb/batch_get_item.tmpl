@@ -1,0 +1,33 @@
+import {util} from '@aws-appsync/utils';
+
+export function request(ctx){
+  const {result} = ctx.prev;
+  if (result.items.length == 0) util.error('No items found');
+  const keys = []
+  for (const item of result.items) {
+    const id = item.SK.split('#')[1];
+    keys.push(util.dynamodb.toMapValues({
+      PK: `{{ .PK }}#${id}`,
+      SK: `{{ .SK }}#${id}`
+    }))
+  }
+  return {
+    operation: 'BatchGetItem',
+    tables: {
+      {{ .TableName | toLowerCase }}: {
+        keys: keys
+      }
+    }
+  };
+}
+
+export function response(ctx){
+  const { result } = ctx
+  if (ctx.error){
+    util.error(ctx.error.message, ctx.error.type, ctx.result)
+  }
+  return {
+    items: result.data.{{ .TableName | toLowerCase }},
+    nextToken: ctx.prev.result.nextToken
+  }
+}

@@ -1,0 +1,35 @@
+import { util } from '@aws-appsync/utils';
+
+export function request(ctx) {
+  const { input } = ctx.args;
+  const { result } = ctx.prev;
+  return {
+    operation: 'TransactWriteItems',
+    transactItems: [
+      {
+        table: '{{ .TableName }}',
+        operation: 'DeleteItem',
+        key: util.dynamodb.toMapValues({PK: `{{ .PK }}#${input.id}`, SK: `{{ .SK }}#${input.id}`})
+      },
+      {{- range .Connections }}
+      {
+        table: '{{ .TableName }}',
+        operation: 'DeleteItem',
+        key: util.dynamodb.toMapValues({
+          PK: '{{ .SK }}#' + result.{{ .SK | toLowerCase }}ID,
+          SK: '{{ .PK }}#' + result.id,
+        })
+      },
+      {{- end }}
+    ],
+  };
+}
+
+export function response(ctx){
+  if (ctx.error){
+    util.error(ctx.error.message, ctx.error.type, ctx.result);
+  }
+  return {
+    {{ .PK | toLowerCase }}ID: Object.values(ctx.result.keys[0])[0].split('#')[1]
+  }
+}

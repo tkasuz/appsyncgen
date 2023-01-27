@@ -1,0 +1,34 @@
+type Subscription {
+{{- range .}}
+    onCreate{{ .Name }}(filter: Subscription{{ .Name }}FilterInput): {{ .Name }}Payload @aws_subscribe(mutations: ["create{{ .Name }}"])
+    {{- if .HasAuthRule }}
+      {{- range .AuthRules.ProvidersAllowedToCreate}}
+      {{- if .IsApiKey}} @aws_api_key{{- end}}
+      {{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+      {{- if .IsIam}} @aws_iam{{- end}}
+      {{- if .IsOidc}} @aws_oidc{{- end}}
+      {{- if .IsLambda}} @aws_lambda{{- end}}
+      {{- end}}
+    {{- end }}
+    onUpdate{{ .Name }}(filter: Subscription{{ .Name }}FilterInput): {{ .Name }}Payload @aws_subscribe(mutations: ["update{{ .Name }}"])
+    {{- if .HasAuthRule }}
+      {{- range .AuthRules.ProvidersAllowedToUpdate}}
+      {{- if .IsApiKey}} @aws_api_key{{- end}}
+      {{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+      {{- if .IsIam}} @aws_iam{{- end}}
+      {{- if .IsOidc}} @aws_oidc{{- end}}
+      {{- if .IsLambda}} @aws_lambda{{- end}}
+      {{- end}}
+    {{- end }}
+    onDelete{{ .Name }}(filter: Subscription{{ .Name }}FilterInput): {{ .Name }}Payload @aws_subscribe(mutations: ["delete{{ .Name }}"])
+    {{- if .HasAuthRule }}
+      {{- range .AuthRules.ProvidersAllowedToDelete}}
+      {{- if .IsApiKey}} @aws_api_key{{- end}}
+      {{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+      {{- if .IsIam}} @aws_iam{{- end}}
+      {{- if .IsOidc}} @aws_oidc{{- end}}
+      {{- if .IsLambda}} @aws_lambda{{- end}}
+      {{- end}}
+    {{- end }}
+{{- end }}
+}

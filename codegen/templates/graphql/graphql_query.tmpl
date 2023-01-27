@@ -1,0 +1,26 @@
+type Query {
+{{- range .}}
+    get{{ .Name }}(id: ID!): {{ .Name }}
+    {{- if .HasAuthRule }}
+    {{- if .AuthRules.HasApiKey}}{{$rule := .AuthRules.ForProvider "apiKey"}}{{- if $rule.HasRead}} @aws_api_key {{- end}}{{- end}}
+    {{- if .AuthRules.HasCognito}}{{$rule := .AuthRules.ForProvider "userPools"}}{{- if $rule.HasRead}} @aws_cognito_user_pools {{- end}}{{- end}}
+    {{- if .AuthRules.HasIAM}}{{$rule := .AuthRules.ForProvider "iam"}}{{- if $rule.HasRead}} @aws_iam {{- end}}{{- end}}
+    {{- if .AuthRules.HasOidc}}{{$rule := .AuthRules.ForProvider "oidc"}}{{- if $rule.HasRead}} @aws_oidc {{- end}}{{- end}}
+    {{- if .AuthRules.HasLambda}}{{$rule := .AuthRules.ForProvider "lambda"}}{{- if $rule.HasRead}} @aws_lambda {{- end}}{{- end}}
+    {{- end }}
+{{- end }}
+{{- range $object := .}}
+{{- range .Fields}}
+    {{- if and (.ReturnType.IsArray) (not .ReturnType.IsPrimitive)}}
+    list{{ .ReturnType.Name }}sBy{{ $object.Name }}({{ $object.Name | toLowerCase }}ID: ID!, limit: Int, nextToken: String): {{ .ReturnType.Name }}List
+    {{- if $object.HasAuthRule }}
+    {{- if $object.AuthRules.HasApiKey}}{{$rule := $object.AuthRules.ForProvider "apiKey"}}{{- if $rule.HasRead}} @aws_api_key{{- end}}{{- end}}
+    {{- if $object.AuthRules.HasCognito}}{{$rule := $object.AuthRules.ForProvider "userPools"}}{{- if $rule.HasRead}} @aws_cognito_user_pools {{- end}}{{- end}}
+    {{- if $object.AuthRules.HasIAM}}{{$rule := $object.AuthRules.ForProvider "iam"}}{{- if $rule.HasRead}} @aws_iam{{- end}}{{- end}}
+    {{- if $object.AuthRules.HasOidc}}{{$rule := $object.AuthRules.ForProvider "oidc"}}{{- if $rule.HasRead}} @aws_oidc {{- end}}{{- end}}
+    {{- if $object.AuthRules.HasLambda}}{{$rule := $object.AuthRules.ForProvider "lambda"}}{{- if $rule.HasRead}} @aws_lambda {{- end}}{{- end}}
+    {{- end }}
+    {{ end }}
+{{- end }}
+{{- end }}
+}

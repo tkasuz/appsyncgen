@@ -1,0 +1,19 @@
+import { util } from '@aws-appsync/utils';
+
+export function request(ctx) {
+  const { id } = ctx.args;
+  return {
+    operation: 'DeleteItem',
+    key: util.dynamodb.toMapValues({PK: `{{ .PK }}#${id}`, SK: `{{ .SK }}#${id}`})
+  };
+}
+
+export function response(ctx){
+  if (ctx.error){
+    util.error(ctx.error.message, ctx.error.type, ctx.result)
+  }
+  return {
+    {{ .PK | toLowerCase }}ID: ctx.result.id,
+    ...ctx.result,
+  }
+}

@@ -1,0 +1,7 @@
+{{- range . }}
+enum {{ .Name }} {
+{{- range .Values}}
+  {{ . }}
+{{- end }}
+}
+{{- end }}

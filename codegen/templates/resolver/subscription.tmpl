@@ -1,0 +1,15 @@
+import {util, extensions} from '@aws-appsync/utils';
+
+export function request(ctx){
+  return {}
+}
+
+export function response(ctx){
+  const { input } = ctx.args;
+  extensions.setSubscriptionFilter(util.transform.toSubscriptionFilter(ctx.args.filter))
+  if (ctx.error){
+    util.error(ctx.error.message, ctx.error.type, ctx.result)
+  } else {
+    return null;
+  }
+}

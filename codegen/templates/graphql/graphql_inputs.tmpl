@@ -1,0 +1,39 @@
+{{ $hasManyList := .HasManyList }}
+{{- range .Objects }}
+input Create{{ .Name }}Input {
+    id: ID
+    {{- range .Fields }}
+    {{ if .ReturnType.IsPrimitive }}
+        {{ if eq .ReturnType.IsArray false}}
+    {{ .Name }}: {{ .ReturnType.Name }}{{ if eq .ReturnType.IsRequired true}}!{{ end }}
+        {{ else }}
+    {{ .Name }}: [{{ .ReturnType.Name }}{{ if eq .ReturnType.IsRequired true}}!{{ end }}]{{ if eq .ReturnType.IsArrayRequired true}}!{{ end }}
+        {{ end }}
+    {{ else }}
+        {{ if .Directive }}
+            {{if .Directive.ConnectionType.IsHasOne }}
+    {{ .ReturnType.Name | toLowerCase }}ID: ID{{ if eq .ReturnType.IsRequired true}}!{{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+    {{- end }}
+    {{ if $hasManyList.ForFirst .Name }}
+    {{ $hasManyList.ForFirst .Name | toLowerCase }}ID: ID!
+    {{ end }}
+}
+input Update{{ .Name }}Input {
+    id: ID!
+    {{- range .Fields }}
+    {{ if .ReturnType.IsPrimitive }}
+        {{ if eq .ReturnType.IsArray false}}
+    {{ .Name }}: {{ .ReturnType.Name }}
+        {{ else }}
+    {{ .Name }}: [{{ .ReturnType.Name }}]
+        {{ end }}
+    {{ end }}
+    {{- end }}
+}
+input Delete{{ .Name }}Input {
+    id: ID!
+}
+{{- end }}

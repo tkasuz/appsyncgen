@@ -1,0 +1,55 @@
+type Mutation {
+{{- range .Objects }}
+  create{{ .Name }}(input: Create{{ .Name }}Input!): {{ .Name }}Payload
+  {{- if .HasAuthRule }}
+    {{- range .AuthRules.ProvidersAllowedToCreate}}
+    {{- if .IsApiKey}} @aws_api_key{{- end}}
+    {{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+    {{- if .IsIam}} @aws_iam{{- end}}
+    {{- if .IsOidc}} @aws_oidc{{- end}}
+    {{- if .IsLambda}} @aws_lambda{{- end}}
+    {{- end}}
+  {{- end }}
+  update{{ .Name }}(input: Update{{ .Name }}Input!): {{ .Name }}Payload
+  {{- if .HasAuthRule }}
+    {{- range .AuthRules.ProvidersAllowedToUpdate}}
+    {{- if .IsApiKey}} @aws_api_key{{- end}}
+    {{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+    {{- if .IsIam}} @aws_iam{{- end}}
+    {{- if .IsOidc}} @aws_oidc{{- end}}
+    {{- if .IsLambda}} @aws_lambda{{- end}}
+    {{- end}}
+  {{- end }}
+	delete{{ .Name }}(input: Delete{{ .Name }}Input!): {{ .Name }}Payload
+  {{- if .HasAuthRule }}
+    {{- range .AuthRules.ProvidersAllowedToDelete}}
+    {{- if .IsApiKey}} @aws_api_key{{- end}}
+    {{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+    {{- if .IsIam}} @aws_iam{{- end}}
+    {{- if .IsOidc}} @aws_oidc{{- end}}
+    {{- if .IsLambda}} @aws_lambda{{- end}}
+    {{- end}}
+  {{- end }}
+{{- end }}
+{{$objects := .Objects}}
+{{- range .Connections }}
+{{$first := $objects.ForName .First}}
+{{$second := $objects.ForName .Second}}
+  create{{ .First }}_{{ .Second }}Connection(input: Create{{ .First }}_{{ .Second }}ConnectionInput!): {{ .First }}_{{ .Second }}ConnectionPayload
+{{- range $first.AuthRules.ProvidersAllowedToCreate.Intersection $second.AuthRules.ProvidersAllowedToRead }}
+{{- if .IsApiKey}} @aws_api_key{{- end}}
+{{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+{{- if .IsIam}} @aws_iam{{- end}}
+{{- if .IsOidc}} @aws_oidc{{- end}}
+{{- if .IsLambda}} @aws_lambda{{- end}}
+{{- end }}
+	delete{{ .First }}_{{ .Second }}Connection(input: Delete{{ .First }}_{{ .Second }}ConnectionInput!): {{ .First }}_{{ .Second }}ConnectionPayload
+{{- range $first.AuthRules.ProvidersAllowedToDelete.Intersection $second.AuthRules.ProvidersAllowedToRead }}
+{{- if .IsApiKey}} @aws_api_key{{- end}}
+{{- if .IsCognito}} @aws_cognito_user_pools{{- end}}
+{{- if .IsIam}} @aws_iam{{- end}}
+{{- if .IsOidc}} @aws_oidc{{- end}}
+{{- if .IsLambda}} @aws_lambda{{- end}}
+{{- end }}
+{{- end }}
+}
