@@ -1,6 +1,9 @@
 package schema
 
 import (
+	"log"
+	"text/template"
+
 	"github.com/kopkunka55/appsyncgen/codegen/directive"
 	"github.com/kopkunka55/appsyncgen/codegen/templates"
 	"github.com/kopkunka55/appsyncgen/codegen/templates/graphql"
@@ -8,8 +11,6 @@ import (
 	"github.com/vektah/gqlparser/ast"
 	"github.com/vektah/gqlparser/gqlerror"
 	"github.com/vektah/gqlparser/parser"
-	"log"
-	"text/template"
 )
 
 type Schema struct {
@@ -41,7 +42,10 @@ func (s *Schema) GenerateNewSchemaFile(exportPath string, tmpl *template.Templat
 	templates.ExecuteTemplate(s.Enums, graphql.Enum, f, tmpl)
 	templates.ExecuteTemplate(s, graphql.SubscriptionFilter, f, tmpl)
 	templates.ExecuteTemplate(nil, graphql.SubscriptionInput, f, tmpl)
-	utils.FormatGraphqlSchema(f)
+	err = utils.FormatGraphqlSchema(f)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func NewSchema(importPath string) *Schema {
@@ -86,7 +90,7 @@ func NewSchema(importPath string) *Schema {
 						First:  def.Name,
 						Second: field.Type.Elem.NamedType,
 					}
-					if connections.HasSamePair(*connection) == false {
+					if !connections.HasSamePair(*connection) {
 						connections = append(connections, connection)
 					}
 				} else if d.ConnectionType.IsHasMany() {

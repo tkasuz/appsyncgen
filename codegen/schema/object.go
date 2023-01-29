@@ -1,9 +1,10 @@
 package schema
 
 import (
-	"github.com/kopkunka55/appsyncgen/codegen/directive"
 	"log"
 	"strings"
+
+	"github.com/kopkunka55/appsyncgen/codegen/directive"
 )
 
 type ObjectType struct {
@@ -11,24 +12,15 @@ type ObjectType struct {
 }
 
 func (o ObjectType) IsConnection() bool {
-	if o.Name == "Connection" {
-		return true
-	}
-	return false
+	return o.Name == "Connection"
 }
 
 func (o ObjectType) IsPayload() bool {
-	if o.Name == "Payload" {
-		return true
-	}
-	return false
+	return o.Name == "Payload"
 }
 
 func (o ObjectType) IsConnectionPayload() bool {
-	if o.Name == "ConnectionPayload" {
-		return true
-	}
-	return false
+	return o.Name == "ConnectionPayload"
 }
 
 func NewObjectType(name string) ObjectType {

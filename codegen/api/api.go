@@ -2,13 +2,14 @@ package api
 
 import (
 	"encoding/json"
+	"log"
+	"os"
+	"text/template"
+
 	"github.com/kopkunka55/appsyncgen/codegen/datasource"
 	"github.com/kopkunka55/appsyncgen/codegen/resolver"
 	"github.com/kopkunka55/appsyncgen/codegen/schema"
 	"github.com/kopkunka55/appsyncgen/codegen/utils"
-	"log"
-	"os"
-	"text/template"
 )
 
 type AppSyncApi struct {
@@ -37,6 +38,9 @@ func FromJson(pathToJson string) *AppSyncApi {
 		log.Fatalln(err)
 	}
 	api := AppSyncApi{}
-	json.Unmarshal(b, &api)
+	err = json.Unmarshal(b, &api)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	return &api
 }

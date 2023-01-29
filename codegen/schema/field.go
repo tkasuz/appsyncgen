@@ -1,8 +1,9 @@
 package schema
 
 import (
-	"github.com/kopkunka55/appsyncgen/codegen/directive"
 	"strings"
+
+	"github.com/kopkunka55/appsyncgen/codegen/directive"
 )
 
 type ReturnType struct {
@@ -20,10 +21,7 @@ func (r ReturnType) IsPrimitive() bool {
 		r.Name == "AWSEmail" || r.Name == "AWSJSON" || r.Name == "AWSPhone" || r.Name == "AWSURL" || r.Name == "AWSIPAddress" {
 		return true
 	} else {
-		if r.EnumList.IsEnum(r.Name) {
-			return true
-		}
-		return false
+		return r.EnumList.IsEnum(r.Name)
 	}
 }
 

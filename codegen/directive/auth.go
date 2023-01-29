@@ -2,8 +2,9 @@ package directive
 
 import (
 	"fmt"
-	"github.com/vektah/gqlparser/ast"
 	"log"
+
+	"github.com/vektah/gqlparser/ast"
 )
 
 type AuthProvider string
@@ -17,38 +18,23 @@ const (
 )
 
 func (a AuthProvider) IsOidc() bool {
-	if a == OIDC {
-		return true
-	}
-	return false
+	return a == OIDC
 }
 
 func (a AuthProvider) IsIam() bool {
-	if a == IAM {
-		return true
-	}
-	return false
+	return a == IAM
 }
 
 func (a AuthProvider) IsApiKey() bool {
-	if a == APIKEY {
-		return true
-	}
-	return false
+	return a == APIKEY
 }
 
 func (a AuthProvider) IsCognito() bool {
-	if a == COGNITO {
-		return true
-	}
-	return false
+	return a == COGNITO
 }
 
 func (a AuthProvider) IsLambda() bool {
-	if a == LAMBDA {
-		return true
-	}
-	return false
+	return a == LAMBDA
 }
 
 func IsAuthProvider(v string) bool {
@@ -77,7 +63,7 @@ func (l AuthProviderList) Union(ll AuthProviderList) (lll AuthProviderList) {
 		lll = append(lll, it)
 	}
 	for _, it := range ll {
-		if _, ok := m[*it]; ok == false {
+		if _, ok := m[*it]; !ok {
 			lll = append(lll, it)
 		}
 	}
@@ -88,13 +74,13 @@ type ModelOperation string
 
 const (
 	CREATE ModelOperation = "create"
-	UPDATE                = "update"
-	DELETE                = "delete"
-	READ                  = "read"
+	UPDATE ModelOperation = "update"
+	DELETE ModelOperation = "delete"
+	READ   ModelOperation = "read"
 )
 
 func IsModelOperation(v string) bool {
-	return v == string(CREATE) || v == UPDATE || v == DELETE || v == READ
+	return v == string(CREATE) || v == string(UPDATE) || v == string(DELETE) || v == string(READ)
 }
 
 type AuthRule struct {
@@ -150,14 +136,20 @@ func NewAuthRuleList(d ast.Directive) *AuthRuleList {
 			if provider == nil {
 				log.Fatalln("provider should be given in @auth directive")
 			}
-			authRuleBuilder.SetAuthProvider(provider.Raw)
+			err := authRuleBuilder.SetAuthProvider(provider.Raw)
+			if err != nil {
+				log.Fatalln(err)
+			}
 			operations := rule.Value.Children.ForName("operations")
 			if operations != nil {
 				newOperations := make([]string, len(operations.Children))
 				for oi, op := range operations.Children {
 					newOperations[oi] = op.Value.Raw
 				}
-				authRuleBuilder.SetModelOperations(newOperations)
+				err := authRuleBuilder.SetModelOperations(newOperations)
+				if err != nil {
+					log.Fatalln(err)
+				}
 			}
 			authRule := authRuleBuilder.Build()
 			authRules[i] = authRule
