@@ -1,18 +1,24 @@
 package main
 
 import (
-	"github.com/kopkunka55/appsyncgen/cli"
-	urfave "github.com/urfave/cli/v2"
 	"log"
 	"os"
 	"sort"
+
+	"github.com/kopkunka55/appsyncgen/cli"
+	urfave "github.com/urfave/cli/v2"
+)
+
+var (
+	Version  = "unset"
+	Revision = "unset"
 )
 
 func main() {
 	app := &urfave.App{
 		Name:                 "appsyncgen",
 		Usage:                "Auto generate AppSync JavaScript Resolver",
-		Version:              "v1.0.0",
+		Version:              Version,
 		EnableBashCompletion: true,
 		Commands: []*urfave.Command{
 			cli.GenerateCommand(),
