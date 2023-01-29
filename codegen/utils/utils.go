@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"gopkg.in/yaml.v3"
 )
 
 func ReadFile(path string) (*string, error) {
@@ -110,9 +111,12 @@ func FormatGraphqlSchema(file *os.File) error {
 		return err
 	}
 	for _, line := range lines {
-		newFile.WriteString(fmt.Sprintln(line))
+		_, err := newFile.WriteString(fmt.Sprintln(line))
 		if line == "}" {
-			newFile.WriteString("\n")
+			_, err = newFile.WriteString("\n")
+		}
+		if err != nil {
+			log.Fatalln(err)
 		}
 	}
 	return nil

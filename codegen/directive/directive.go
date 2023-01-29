@@ -34,7 +34,7 @@ func NewDirective(l ast.DirectiveList) *Directive {
 		dir.ConnectionType = NewConnection(it.Name)
 		dir.AuthRules = NewAuthRuleList(*it)
 	}
-	if dir.HasAuthRules() == false && dir.HasConnection() == false {
+	if !dir.HasAuthRules() && !dir.HasConnection() {
 		return nil
 	}
 	return dir

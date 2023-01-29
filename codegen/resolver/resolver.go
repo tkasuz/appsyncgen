@@ -3,16 +3,17 @@ package resolver
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"text/template"
+
 	"github.com/kopkunka55/appsyncgen/codegen/datasource"
 	"github.com/kopkunka55/appsyncgen/codegen/schema"
 	"github.com/kopkunka55/appsyncgen/codegen/templates"
 	"github.com/kopkunka55/appsyncgen/codegen/templates/resolver"
 	"github.com/kopkunka55/appsyncgen/codegen/templates/resolver/dynamodb"
 	"github.com/kopkunka55/appsyncgen/codegen/utils"
-	"log"
-	"os"
-	"path/filepath"
-	"text/template"
 )
 
 type Operation string
@@ -54,7 +55,10 @@ func FromJson(pathToJson string) ResolverList {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	json.Unmarshal(b, &resolvers)
+	err = json.Unmarshal(b, &resolvers)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	return resolvers.Resolvers
 }
 

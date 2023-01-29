@@ -1,15 +1,16 @@
 package api
 
 import (
-	"github.com/kopkunka55/appsyncgen/codegen/datasource"
-	"github.com/kopkunka55/appsyncgen/codegen/resolver"
-	"github.com/kopkunka55/appsyncgen/codegen/schema"
-	"github.com/kopkunka55/appsyncgen/codegen/templates"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/kopkunka55/appsyncgen/codegen/datasource"
+	"github.com/kopkunka55/appsyncgen/codegen/resolver"
+	"github.com/kopkunka55/appsyncgen/codegen/schema"
+	"github.com/kopkunka55/appsyncgen/codegen/templates"
 )
 
 type AppSyncApiBuilder struct {
@@ -101,7 +102,7 @@ func (a *AppSyncApiBuilder) Build() AppSyncApi {
 				resolvers = append(resolvers, r)
 			default:
 				if a.Schema.Objects.ForName(obj.Name) != nil || strings.HasSuffix(obj.Name, "Payload") {
-					if r.ReturnType.IsPrimitive() == false {
+					if !r.ReturnType.IsPrimitive() {
 						r.GenerateFieldResolver(*a.ExportPath, a.Templates)
 						resolvers = append(resolvers, r)
 					}

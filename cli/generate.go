@@ -2,18 +2,19 @@ package cli
 
 import (
 	"fmt"
+	"path/filepath"
+	"time"
+
 	"github.com/briandowns/spinner"
 	"github.com/fatih/color"
 	"github.com/kopkunka55/appsyncgen/codegen/api"
 	"github.com/urfave/cli/v2"
-	"path/filepath"
-	"time"
 )
 
 func GenerateAction(context *cli.Context) error {
 	s := spinner.New(spinner.CharSets[35], 2*time.Second)
 	c := color.New(color.FgHiMagenta)
-	s.Color("green", "bold")
+	_ = s.Color("green", "bold")
 	apiBuilder := api.NewAppSyncApiBuilder()
 	apiBuilder.SetName(context.String("name"))
 	apiBuilder.SetExportPath(context.String("output"))
