@@ -1,4 +1,4 @@
-# appsyncgen [![Go Report Card](https://goreportcard.com/badge/github.com/kopkunka55/appsyncgen)](https://goreportcard.com/report/github.com/kopkunka55/appsyncgen) [![Go Reference](https://pkg.go.dev/badge/github.com/kopkunka55/appsyncgen.svg)](https://pkg.go.dev/github.com/kopkunka55/appsyncgen)
+# appsyncgen [![Go Report Card](https://goreportcard.com/badge/github.com/kopkunka55/appsyncgen)](https://goreportcard.com/report/github.com/kopkunka55/appsyncgen) [![Go Reference](https://pkg.go.dev/badge/github.com/kopkunka55/appsyncgen.svg)](https://pkg.go.dev/github.com/kopkunka55/appsyncgen) [![lint status](https://github.com/kopkunka55/appsyncgen/workflows/lint/badge.svg)](https://github.com/kopkunka55/appsyncgen/actions)
 
 appsyncgen is a CLI for generating AWS AppSync JavaScript Resolvers based on Amazon DynamoDB single-table design.
 
