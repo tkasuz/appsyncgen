@@ -2,11 +2,15 @@ package templates
 
 import (
 	"bytes"
+	"embed"
 	"fmt"
 	"log"
 	"os"
 	"text/template"
 )
+
+//go:embed *
+var f embed.FS
 
 type DynamoDBResolverTemplateData struct {
 	PK          string
@@ -22,7 +26,7 @@ func NewTemplate() *template.Template {
 
 func ImportTemplate(tmpl *template.Template, tmplPaths ...string) *template.Template {
 	for _, p := range tmplPaths {
-		tmpl = template.Must(tmpl.ParseGlob(p))
+		tmpl = template.Must(tmpl.ParseFS(f, p))
 	}
 	return tmpl
 }
