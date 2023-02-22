@@ -18,7 +18,6 @@ func GenerateAction(context *cli.Context) error {
 	apiBuilder := api.NewAppSyncApiBuilder()
 	apiBuilder.SetName(context.String("name"))
 	apiBuilder.SetExportPath(context.String("output"))
-	apiBuilder.SetTemplates("./codegen/templates")
 	apiBuilder.SetSchema(context.String("schema"))
 	fmt.Printf("✅ Generated GraphQL schema to %s\n", c.Sprint(filepath.Join(*apiBuilder.ExportPath, "schema.graphql")))
 	apiBuilder.AddDataSource("DYNAMODB", context.String("name"))

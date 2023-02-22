@@ -49,6 +49,7 @@ func (a *AppSyncApiBuilder) AddDataSource(datasourceType string, datasourceName 
 }
 
 func (a *AppSyncApiBuilder) SetSchema(pathToSchema string) {
+	a.SetTemplates()
 	if a.ExportPath == nil {
 		log.Fatalln("export path should be set before setting schema")
 	}
@@ -65,14 +66,15 @@ func (a *AppSyncApiBuilder) SetSchema(pathToSchema string) {
 	a.Schema = schema
 }
 
-func (a *AppSyncApiBuilder) SetTemplates(pathToTemplate string) {
+func (a *AppSyncApiBuilder) SetTemplates() {
+
 	tmpl := templates.NewTemplate()
 	tmpl = templates.AddFunctionMap(tmpl, map[string]any{
 		"toLowerCase": strings.ToLower,
 	})
-	tmpl = templates.ImportTemplate(tmpl, filepath.Join(pathToTemplate, "resolver", "dynamodb", "*.tmpl"))
-	tmpl = templates.ImportTemplate(tmpl, filepath.Join(pathToTemplate, "resolver", "*.tmpl"))
-	tmpl = templates.ImportTemplate(tmpl, filepath.Join(pathToTemplate, "graphql", "*.tmpl"))
+	tmpl = templates.ImportTemplate(tmpl, "resolver/dynamodb/*.tmpl")
+	tmpl = templates.ImportTemplate(tmpl, "resolver/*.tmpl")
+	tmpl = templates.ImportTemplate(tmpl, "graphql/*.tmpl")
 	a.Templates = tmpl
 }
 
