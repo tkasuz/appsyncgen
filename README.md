@@ -25,8 +25,15 @@ appsyncgen is a CLI providing some useful capability to develop GraphQL API with
 
 ## Installing
 ```shell
-go install github.com/kopkunka55/appsyncgen
+go install github.com/kopkunka55/appsyncgen@latest
 ```
+
+### For Mac OS
+```shell
+brew tap kopkunka55/appsyncgen
+brew install kopkunka55/appsyncgen/appsyncgen
+```
+
 ## Usage
 All you need is `schema.graphql` which includes only basic types. Mutation/Query/Subscription and some supplemental types will be added.
 

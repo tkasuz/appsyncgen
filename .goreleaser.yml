@@ -26,3 +26,10 @@ archives:
         format: zip
 release:
   prerelease: auto
+brews:
+  - tap:
+      owner: kopkunka55
+      name: homebrew-appsyncgen
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+      branch: main
+    homepage: https://github.com/kopkunka55/appsyncgen
